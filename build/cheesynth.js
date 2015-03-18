@@ -3,16 +3,92 @@
   var CheeSynth;
 
   CheeSynth = (function() {
+    var Fixture, draw;
+
     CheeSynth.prototype.toString = function() {
       return '[object CheeSynth]';
     };
 
-    function CheeSynth(opt) {}
+    function CheeSynth(opt) {
+      this.el = opt.el;
+      this.width = opt.width;
+      this.height = opt.height;
+      this.fixtures = [];
+    }
+
+    CheeSynth.prototype.add = function(x, y, component) {
+      var fixture;
+      this.fixtures.push(fixture = new Fixture(x, y, component));
+      return fixture;
+    };
+
+    CheeSynth.prototype.render = function() {
+      var fixture, line, out, row, _i, _len, _ref;
+      line = '· ' + (new Array(this.width / 2)).join('· ');
+      out = (function() {
+        var _i, _ref, _results;
+        _results = [];
+        for (row = _i = 1, _ref = this.height; 1 <= _ref ? _i <= _ref : _i >= _ref; row = 1 <= _ref ? ++_i : --_i) {
+          _results.push(line);
+        }
+        return _results;
+      }).call(this);
+      _ref = this.fixtures;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        fixture = _ref[_i];
+        draw(fixture, out);
+      }
+      return this.el.innerHTML = out.join('\n');
+    };
+
+    draw = function(fixture, out) {
+      var i, oline, rendered, rline, x, y, _i, _len;
+      x = fixture.x;
+      y = fixture.y;
+      rendered = fixture.component.render();
+      for (i = _i = 0, _len = rendered.length; _i < _len; i = ++_i) {
+        rline = rendered[i];
+        oline = out[y + i];
+        if (!oline) {
+          throw new Error("" + fixture.component + " exceeds height!");
+        }
+        out[y + i] = "" + (oline.substr(0, x)) + rline + (oline.substr(x + rline.length));
+      }
+      return void 0;
+    };
+
+    Fixture = (function() {
+      function Fixture(x, y, component) {
+        this.x = x;
+        this.y = y;
+        this.component = component;
+      }
+
+      return Fixture;
+
+    })();
 
     return CheeSynth;
 
   })();
 
   window.CheeSynth = CheeSynth;
+
+  CheeSynth.Component = (function() {
+    Component.prototype.toString = function() {
+      return '[object Component]';
+    };
+
+    function Component(opt) {
+      this.id = opt.id;
+    }
+
+    Component.prototype.render = function() {
+      return ['.-V-V-.', '|     |', "| " + this.id + " |", '|     |', "'=V=V='"];
+    };
+
+    return Component;
+
+  })();
 
 }).call(this);
