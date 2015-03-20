@@ -1,0 +1,33 @@
+body {
+  margin: 0 1rem;
+}
+
+.filog {
+  padding: .5rem;
+  border: 1px solid #808080;
+  font: 1rem/1.6rem monaco, monospace;
+  white-space: pre;
+}
+.filog-number,
+.filog-boolean {
+  color: #00f;
+}
+.filog-null,
+.filog-undefined {
+  color: #808080;
+}
+.filog-regexp {
+  color: #090;
+}
+.filog-array {
+  color: #990;
+}
+.filog-object {
+  color: #909;
+}
+.filog-location {
+  color: #f06;
+}
+.filog-error {
+  color: #c60;
+}

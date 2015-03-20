@@ -20,7 +20,7 @@ Define the constructor
 ----------------------
 
       constructor: (opt) ->
-        @id = opt.id
+        @id     = opt.id
 
 
 
@@ -38,6 +38,7 @@ Xx.
         '|     |'
         "'=V=V='"
       ]
+
 
 
 

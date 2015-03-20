@@ -5,24 +5,36 @@
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <link rel="stylesheet" type="text/css" href="../css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="../css/filog.css">
   <link rel="stylesheet" type="text/css" href="../css/cheesynth.css">
+  <script src="../lib/filog.js"></script>
   <script src="../build/cheesynth-test.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      claud = new Claud({
+        selectors: { in:'#claud-in', out:'#claud-out' }
+      });
+      document.querySelector('#claud-in').focus();
       cs = new CheeSynth({
         el:    document.querySelector('#cs1'),
         width: 78,
         height:16
       });
       cp1 = cs.add(30, 8, new CheeSynth.Component({ id:'cp1' }));
-      cp2 = cs.add(2 , 5, new CheeSynth.Component({ id:'cp2' }));
+      cp2 = cs.add(2 , 2, new CheeSynth.Component({ id:'cp2' }));
       cs.render();
-      console.log('In the console, type `cp2.x = 27`, followed by `cs.render()`.');
+      claud.log('In the console, type `cp2.x = 30`, followed by `cs.render()`.');
     });
   </script>
 </head>
 <body>
   <h1>CheeSynth: Basic Usage</h1>
-  <pre class="cheesynth" id="cs1"></pre>
+  <div class="cheesynth" id="cs1"></div>
+  <ul class="cheesynth-buttons">
+    <li onclick="claud.add('cp2.x = 30; cs.render()').run()">cp2.x = 30</li>
+    <li onclick="claud.add('cp1.y += 1; cs.render()').run()">cp1.y += 1</li>
+  </ul>
+  <div id="claud-out" class="filog" style="height:8rem; overflow:auto;"></div>
+  <div id="claud-in"  class="filog"></div>
 </body>
 </html>
