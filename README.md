@@ -1,7 +1,7 @@
-CheeSynth 0.0.3
+CheeSynth 0.0.4
 ===============
 
-A modular Web Audio synthesizer, with plenty of GUI rendering options.
+A modular Web Audio synthesizer with plaintext rendering.
 
 
 See [cheesynth.richplastow.com](http://cheesynth.richplastow.com/) for 

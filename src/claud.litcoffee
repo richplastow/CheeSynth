@@ -1,5 +1,5 @@
-Claud
-=====
+Claud 0.0.0
+===========
 
 
 
@@ -17,7 +17,7 @@ Define the constructor
 ----------------------
 
       constructor: (opt={}) ->
-        @log = new Filog( opt.selectors.out ).log
+        @log = new Filog({ selector: opt.selectors.out, console:no }).log
         @in = document.querySelector opt.selectors.in
         @in.setAttribute 'contenteditable', 'true'
         @in.addEventListener 'keydown', @keydown
@@ -36,7 +36,6 @@ Simulate typing a line of text in the CLI, and then hitting [return].
 
       add: (line) ->
         @pointer = (@commands.push @log line) - 1
-        console.log @pointer
         @ # allow chaining
 
 
@@ -44,7 +43,7 @@ Simulate typing a line of text in the CLI, and then hitting [return].
 Simulate hitting [return] in the CLI. 
 
       run: ->
-        eval @commands[ @commands.length - 1]
+        try eval @commands[ @commands.length - 1] catch e then @log e
 
 
 #### `keydown()`
@@ -54,7 +53,7 @@ React to [return], and the [up] and [down] arrow keys.
         #@log evt.keyCode
         switch evt.keyCode
           when 13 # [return]
-            @pointer = (@commands.push @log @in.innerHTML) - 1
+            @pointer = (@commands.push @log @in.textContent) - 1
             @in.innerHTML = ''
             @run()
             evt.preventDefault() # don't make a new line in `@in`
@@ -66,17 +65,6 @@ React to [return], and the [up] and [down] arrow keys.
             @pointer = Math.min @commands.length - 1, @pointer + 1
             @in.innerHTML = @commands[@pointer]
             evt.preventDefault() # don't make a new line in `@in`
-
-
-
-
-Define private methods
-----------------------
-
-#### `xx()`
-Xx. 
-
-      xx = (xx) ->
 
 
 

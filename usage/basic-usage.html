@@ -17,13 +17,14 @@
       document.querySelector('#claud-in').focus();
       cs = new CheeSynth({
         el:    document.querySelector('#cs1'),
-        width: 78,
+        width: 50,
         height:16
       });
-      cp1 = cs.add(30, 8, new CheeSynth.Component({ id:'cp1' }));
-      cp2 = cs.add(2 , 2, new CheeSynth.Component({ id:'cp2' }));
+      bk1 = cs.add(30, 3, new CheeSynth.Brick({ id:'bk1' }));
+      bk2 = cs.add(2 , 0, new CheeSynth.Brick({ id:'bk2' }));
+      bk3 = cs.add(15, 6, new CheeSynth.Brick({ id:'bk3' }));
+      bk4 = cs.add(40 ,6, new CheeSynth.Brick({ id:'bk4' }));
       cs.render();
-      claud.log('In the console, type `cp2.x = 30`, followed by `cs.render()`.');
     });
   </script>
 </head>
@@ -31,8 +32,8 @@
   <h1>CheeSynth: Basic Usage</h1>
   <div class="cheesynth" id="cs1"></div>
   <ul class="cheesynth-buttons">
-    <li onclick="claud.add('cp2.x = 30; cs.render()').run()">cp2.x = 30</li>
-    <li onclick="claud.add('cp1.y += 1; cs.render()').run()">cp1.y += 1</li>
+    <li onclick="claud.add('bk1.y += 1; cs.render()').run()">bk1.y += 1</li>
+    <li onclick="claud.add('bk2.x = 30; cs.render()').run()">bk2.x = 30</li>
   </ul>
   <div id="claud-out" class="filog" style="height:8rem; overflow:auto;"></div>
   <div id="claud-in"  class="filog"></div>
