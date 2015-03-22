@@ -1,4 +1,4 @@
-CheeSynth 0.0.5
+CheeSynth 0.0.6
 ===============
 
 A modular Web Audio synthesizer with plaintext rendering.
@@ -13,12 +13,12 @@ documentation and live usage examples.
 Build
 -----
 
-Build CheeSynth on the command line:
+Build CheeSynth on the command line: 
 ```
 $ coffee -j build/cheesynth.js -wc src/*.litcoffee
 ```
 
-Build CheeSynth with tests:
+Build with tests: 
 ```
 $ coffee -j build/cheesynth-test.js -wc src/*.litcoffee test/*.litcoffee
 ```

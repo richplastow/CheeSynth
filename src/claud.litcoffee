@@ -43,7 +43,8 @@ Simulate typing a line of text in the CLI, and then hitting [return].
 Simulate hitting [return] in the CLI. 
 
       run: ->
-        try eval @commands[ @commands.length - 1] catch e then @log e
+        try eval @commands[ @commands.length - 1] catch e
+          @log e; console.log e
 
 
 #### `keydown()`

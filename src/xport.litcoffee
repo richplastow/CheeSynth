@@ -12,6 +12,7 @@ Make the various `Brick` subclasses available to `CheeSynth.createBrick()`.
 
     brickClasses = 
       Brick:       Brick
+      Param:       Param
       BrickAudio:  BrickAudio
       Loudspeaker: Loudspeaker
       Wave:        Wave

@@ -31,6 +31,17 @@ Define the constructor
 Define public methods
 ---------------------
 
+#### `maintain()`
+Xx. 
+
+      maintain: (from, to) ->
+        claud.log @id + '.' + from.c, 'still connected to ', to.f.brick.id + '.' + to.c
+        if 'Param' == from.f.brick.I
+          if 'F' == to.c
+            @oscillator.frequency.value = from.f.brick.O
+          #@todo gain on 'G'
+
+
 #### `connect()`
 Xx. 
 
@@ -38,6 +49,10 @@ Xx.
         claud.log @id + '.' + from.c, 'connects to ', to.f.brick.id + '.' + to.c
         if 'Loudspeaker' == to.f.brick.I
           @oscillator.connect CheeSynth.ctx.destination
+        if 'Param' == from.f.brick.I
+          if 'F' == to.c
+            @oscillator.frequency.value = from.f.brick.O
+          #@todo gain on 'G'
 
 
 #### `disconnect()`
@@ -55,7 +70,7 @@ Xx.
       render: -> [
         '.=====.'
         '|     |'
-        "I #{@id} O"
+        "F #{@id} F"
         '|     |'
         "'L===R'"
       ]

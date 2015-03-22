@@ -33,11 +33,11 @@ Xx. @todo better place for this
 Define public methods
 ---------------------
 
-#### `createBrick()`
+#### `add()`
 Instantiate a `Brick` and a `Fixture`, wrap the `Brick` in the `Fixture`, and 
-add the `Fixture` to the cheeseboard. 
+attach the `Fixture` to the cheeseboard. 
 
-      createBrick: (x, y, brickClass) ->
+      add: (x, y, brickClass) ->
         brick = new brickClasses[brickClass]
         @fixtures.push @[brick.id] = new Fixture
           id:    'f' + @fixtures.length #@todo better system
@@ -109,11 +109,14 @@ update `newConnections`.
                   x++
               break
 
-Step through the old list of connections, and notify Bricks about any new 
-disconnections. 
+Step through the old list of connections, maintain connections which have not 
+changed, and notify Bricks about any new disconnections. 
 
         for key,[sender, receiver] of @connections
-          if ! newConnections[key]
+          if newConnections[key]
+            sender.f.brick.maintain   sender, receiver
+            receiver.f.brick.maintain sender, receiver
+          else
             sender.f.brick.disconnect   sender, receiver
             receiver.f.brick.disconnect sender, receiver
 

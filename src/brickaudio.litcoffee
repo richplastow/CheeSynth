@@ -1,8 +1,7 @@
 BrickAudio
 ==========
 
-An `BrickAudio` is a Brick which uses Web Audio to generate, process, or 
-analyse sound. 
+A Brick which uses Web Audio to generate, process, or analyse sound. 
 
 
 
