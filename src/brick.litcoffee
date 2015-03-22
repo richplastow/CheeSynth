@@ -1,8 +1,7 @@
 Brick
 =====
 
-`Brick` can be accessed on the `CheeSynth` class, eg:  
-`myBrick = new CheeSynth.Brick()` 
+The base class for all the more specialized `Brick` subclasses.
 
 
 
@@ -11,7 +10,9 @@ Define the `Brick` class
 ------------------------
 
     class Brick
-      toString: -> "[object Brick #{@id}]"
+      I: 'Brick'
+      toString: -> "[object #{I} #{@id}]"
+      tally = 0
 
 
 
@@ -20,7 +21,7 @@ Define the constructor
 ----------------------
 
       constructor: (opt) ->
-        @id     = opt.id
+        @id = @I.charAt(0).toLowerCase() + zeroPad ++tally
 
 
 
@@ -28,25 +29,39 @@ Define the constructor
 Define public methods
 ---------------------
 
+#### `connect()`
+Xx. 
 
-#### `getIns()` and `getIns()`
-Returns the relative coordinates of this brick's input and output points. 
+      connect: (from, to) ->
 
-      #getIns : -> [ [1,0], [5,0] ]
-      #getOuts: -> [ [1,4], [5,4] ]
+
+#### `disconnect()`
+Xx. 
+
+      disconnect: (from, to) ->
 
 
 #### `render()`
 Xx. 
 
       render: -> [
-        'L--M--R'
+        '.=====.'
         '|     |'
-        "C #{@id} c"
+        "| #{@id} |"
         '|     |'
-        'l==m==r'
+        "'====='"
       ]
 
+
+
+
+Define private static methods
+-----------------------------
+
+#### `zeroPad()`
+Only works up to 10 characters. @todo smarter way of dealing with ids
+
+      zeroPad = (x, l=2) -> ('0000000000' + x).substr -Math.max l, (x+'').length
 
 
 

@@ -20,10 +20,8 @@
         width: 50,
         height:16
       });
-      bk1 = cs.add(30, 3, new CheeSynth.Brick({ id:'bk1' }));
-      bk2 = cs.add(2 , 0, new CheeSynth.Brick({ id:'bk2' }));
-      bk3 = cs.add(15, 6, new CheeSynth.Brick({ id:'bk3' }));
-      bk4 = cs.add(40 ,6, new CheeSynth.Brick({ id:'bk4' }));
+      // cs.createBrick(3  ,1 , 'Wave');
+      cs.createBrick(10 ,10, 'Loudspeaker');
       cs.render();
     });
   </script>
@@ -32,8 +30,10 @@
   <h1>CheeSynth: Basic Usage</h1>
   <div class="cheesynth" id="cs1"></div>
   <ul class="cheesynth-buttons">
-    <li onclick="claud.add('bk1.y += 1; cs.render()').run()">bk1.y += 1</li>
-    <li onclick="claud.add('bk2.x = 30; cs.render()').run()">bk2.x = 30</li>
+    <li onclick="claud.add('cs.createBrick(3,1,\'Wave\'); cs.render()').run()">createBrick(3,1,'Wave')</li>
+    <li onclick="claud.add('cs.w02.x--; cs.render()').run()">w02.x--</li>
+    <li onclick="claud.add('cs.w02.x++; cs.render()').run()">w02.x++</li>
+    <li onclick="claud.add('cs.w02.y++; cs.render()').run()">w02.y++</li>
   </ul>
   <div id="claud-out" class="filog" style="height:8rem; overflow:auto;"></div>
   <div id="claud-in"  class="filog"></div>

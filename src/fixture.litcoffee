@@ -28,10 +28,10 @@ Define the constructor
 Define public methods
 ---------------------
 
-#### `composit()`
+#### `insert()`
 Adds the fixture’s brick into the `cb` array, which represents a cheeseboard. 
 
-      composit: (cb) ->
+      insert: (cb) ->
 
 Make sure the fixture’s (x,y) coords are within cheeseboard bounds. 
 
@@ -65,16 +65,14 @@ perimeter. Firstly, determine whether this character is on an edge or corner.
 
             isTop  = 0 == y
             isLeft = 0 == x
-            if ! isTop
-              isBottom = lines.length-1 == y
-            if ! isLeft
-              isRight  = line.length-1  == x
+            isBottom = lines.length-1 == y
+            isRight  = line.length-1  == x
 
 Don’t add the inner characters of bricks to `cb.helper`, just the edges. 
 
             if isTop || isRight || isBottom || isLeft
 
-To avoid rerunning the regexp test in `CheeSynth.composit()`, cache the result. 
+Avoid re-testing `char` in `CheeSynth.composite()`, by caching the result. 
 
               meta.p = /[a-zA-Z]/.test char # `p` means ‘is a pin’
 

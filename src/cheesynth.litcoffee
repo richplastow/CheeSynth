@@ -17,10 +17,15 @@ Define the constructor
 ----------------------
 
       constructor: (opt={}) ->
-        @el         = opt.el
-        @width      = opt.width
-        @height     = opt.height
-        @fixtures   = []
+        @el          = opt.el
+        @width       = opt.width
+        @height      = opt.height
+        @fixtures    = []
+        @connections = {}
+
+Xx. @todo better place for this
+
+        CheeSynth.ctx = new AudioContext
 
 
 
@@ -28,74 +33,102 @@ Define the constructor
 Define public methods
 ---------------------
 
-#### `add()`
-Add a premade `Brick` instance to the cheeseboard, by wrapping it in a newly 
-created `Fixture` instance. 
+#### `createBrick()`
+Instantiate a `Brick` and a `Fixture`, wrap the `Brick` in the `Fixture`, and 
+add the `Fixture` to the cheeseboard. 
 
-      add: (x, y, brick) ->
-        @fixtures.push fixture = new Fixture
+      createBrick: (x, y, brickClass) ->
+        brick = new brickClasses[brickClass]
+        @fixtures.push @[brick.id] = new Fixture
           id:    'f' + @fixtures.length #@todo better system
           x:     x
           y:     y
           brick: brick
-        fixture
+        @[brick.id]
 
 
 
 
-#### `composit()`
+#### `composite()`
 Usually called after fixtures have been added, moved or removed. 
 
-      composit: ->
+      composite: ->
 
 Rebuild `@cb` (the cheeseboard), a 2D array of empty objects. 
 
-        @cb = ({} for i in [1..@height] for i in [1..@width])
+        @cb = ({} for y in [1..@height] for x in [1..@width])
 
 Initialize `@cb.helper`, which will be used to connect the bricks together. 
 
         @cb.helper = { top:{}, right:[], bottom:[], left:{} }
 
-Composit the fixtures, and throw an error if any overlap or are out of bounds. 
+Composite the fixtures, and throw an error if any overlap or are out of bounds. 
 This operation also populates `@cb.helper`. 
 
-        fixture.composit @cb for fixture in @fixtures
+        fixture.insert @cb for fixture in @fixtures
+
+Initialize `newConnections`, which will hold each connection found during the 
+next two `for` loops. Afterwards, this will be compared to `@connections`, so 
+that Bricks can be notified that they have been connected of disconnected. 
+
+        newConnections = {}
 
 Step downward from each bottom-edge pin until a top-edge character is reached. 
-If the top-edge character is also a pin, draw a vertical line between them. 
+If the top-edge character is also a pin, draw a vertical line between them and 
+update `newConnections`. 
 
-        for pin in @cb.helper.bottom # all `@cb.helper.bottom` elements are pins
-          y = pin.y
+        for sender in @cb.helper.bottom # all `@cb.helper.bottom` elements are pins
+          y = sender.y
           while @height > y
-            char = @cb.helper.top[ pin.x + ',' + y ]
-            if char # `undefined` for empty areas of cheeseboard
-              if char.p # `false` for top-edge characters which are not pins
-                #@todo tell the two bricks about their connection
-                y = pin.y + 1
-                while char.y > y
-                  @cb[pin.x][y] = { c:'|' }
+            y++
+            receiver = @cb.helper.top[ sender.x + ',' + y ]
+            if receiver # `undefined` for empty areas of cheeseboard
+              if receiver.p # `false` for top-edge characters which are not pins
+                newConnections[sender.f.id + sender.c + '-' + receiver.f.id + receiver.c] = [sender, receiver]
+                y = sender.y + 1
+                while receiver.y > y
+                  @cb[sender.x][y].c = '|'
                   y++
               break
-            y++
 
 Step rightward from each right-edge pin until a left-edge character is reached. 
-If the left-edge character is also a pin, draw a horizontal line between them. 
+If the left-edge character is also a pin, draw a horizontal line between and 
+update `newConnections`. 
 
-        for pin in @cb.helper.right # all `@cb.helper.right` elements are pins
-          x = pin.x
+        for sender in @cb.helper.right # all `@cb.helper.right` elements are pins
+          x = sender.x
           while @width > x
-            char = @cb.helper.left[ x + ',' + pin.y ]
-            if char # `undefined` for empty areas of cheeseboard
-              if char.p # `false` for left-edge characters which are not pins
-                #@todo tell the two bricks about their connection
-                x = pin.x + 1
-                while char.x > x
-                  @cb[x][pin.y].c = if '|' == @cb[x][pin.y].c then '+' else '—' #@todo test em-dash on various devices
+            x++
+            receiver = @cb.helper.left[ x + ',' + sender.y ]
+            if receiver # `undefined` for empty areas of cheeseboard
+              if receiver.p # `false` for left-edge characters which are not pins
+                newConnections[sender.f.id + sender.c + '-' + receiver.f.id + receiver.c] = [sender, receiver]
+                x = sender.x + 1
+                while receiver.x > x
+                  @cb[x][sender.y].c = if '|' == @cb[x][sender.y].c then '+' else '—' #@todo test em-dash on various devices
                   x++
               break
-            x++
 
-        return # simplify compiled JavaScript
+Step through the old list of connections, and notify Bricks about any new 
+disconnections. 
+
+        for key,[sender, receiver] of @connections
+          if ! newConnections[key]
+            sender.f.brick.disconnect   sender, receiver
+            receiver.f.brick.disconnect sender, receiver
+
+Step through the newly updated list of connections, and notify Bricks about any 
+newly made connections. 
+
+        for key,[sender, receiver] of newConnections
+          if ! @connections[key]
+            sender.f.brick.connect   sender, receiver
+            receiver.f.brick.connect sender, receiver
+
+The newly found connections now represent the current set of connections, so 
+replace the old set ready for the next time `composite()` is called. 
+
+        @connections = newConnections
 
 
 
@@ -105,11 +138,11 @@ Convert the cheeseboard to a string. Optionally, it can be marked up with HTML.
 
       render: ->
 
-Before rendering the CheeSynth, composit all fixtures and connections
+Before rendering the cheeseboard, composite all fixtures and connections. 
 
-        @composit() #@todo only if fixtures have been added, moved or removed since the last render
+        @composite() #@todo only if fixtures have been added, moved or removed since the last render
 
-Draw each ‘pixel’, row by row. 
+Draw each character, row by row, column by column. 
 
         out = ''
         for y in [0..@height-1]
@@ -118,7 +151,7 @@ Draw each ‘pixel’, row by row.
             out += if c then c else '·' #@todo test mid-dot on various devices
           out += '\n'
 
-Wrap mid-dots in <EM> elements, so that CSS can knock them back @todo
+Wrap mid-dots in `<EM>` elements, so that CSS can knock them back. @todo
 
 Send the result to the display element. @todo if present - we might be serverside, or unit testing
 
