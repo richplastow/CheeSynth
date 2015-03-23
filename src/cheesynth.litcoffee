@@ -18,14 +18,14 @@ Define the constructor
 
       constructor: (opt={}) ->
         @el          = opt.el
-        @width       = opt.width
-        @height      = opt.height
+        @width       = opt.width  || 0
+        @height      = opt.height || 0
         @fixtures    = []
         @connections = {}
 
 Xx. @todo better place for this
 
-        CheeSynth.ctx = new AudioContext
+        CheeSynth.ctx ?= new AudioContext
 
 
 
@@ -151,14 +151,15 @@ Draw each character, row by row, column by column.
         for y in [0..@height-1]
           for x in [0..@width-1]
             c = @cb[x][y].c
-            out += if c then c else '·' #@todo test mid-dot on various devices
+            out += if c then c else 'x' #@todo test mid-dot on various devices
           out += '\n'
 
 Wrap mid-dots in `<EM>` elements, so that CSS can knock them back. @todo
 
-Send the result to the display element. @todo if present - we might be serverside, or unit testing
+Send the result to the display element. 
 
-        @el.innerHTML = out
+        if @el then @el.innerHTML = out
+        out
 
 
 

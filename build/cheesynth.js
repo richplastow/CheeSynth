@@ -68,11 +68,13 @@
         opt = {};
       }
       this.el = opt.el;
-      this.width = opt.width;
-      this.height = opt.height;
+      this.width = opt.width || 0;
+      this.height = opt.height || 0;
       this.fixtures = [];
       this.connections = {};
-      CheeSynth.ctx = new AudioContext;
+      if (CheeSynth.ctx == null) {
+        CheeSynth.ctx = new AudioContext;
+      }
     }
 
     CheeSynth.prototype.add = function(x, y, brickClass) {
@@ -184,11 +186,14 @@
       for (y = _i = 0, _ref = this.height - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; y = 0 <= _ref ? ++_i : --_i) {
         for (x = _j = 0, _ref1 = this.width - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; x = 0 <= _ref1 ? ++_j : --_j) {
           c = this.cb[x][y].c;
-          out += c ? c : '·';
+          out += c ? c : 'x';
         }
         out += '\n';
       }
-      return this.el.innerHTML = out;
+      if (this.el) {
+        this.el.innerHTML = out;
+      }
+      return out;
     };
 
     return CheeSynth;

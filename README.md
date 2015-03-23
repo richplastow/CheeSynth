@@ -1,4 +1,4 @@
-CheeSynth 0.0.7
+CheeSynth 0.0.8
 ===============
 
 A modular Web Audio synthesizer with plaintext rendering.
