@@ -18,10 +18,11 @@
       cs = new CheeSynth({
         el:    document.querySelector('#cs1'),
         width: 50,
-        height:16
+        height:24
       });
       // cs.add(3  ,1 , 'Wave');
-      cs.add(10 ,11, 'Loudspeaker');
+      cs.add(29, 18, 'Loudspeaker');
+      cs.add(8 , 10, 'Visualizer');
       cs.render();
     });
   </script>
@@ -30,14 +31,17 @@
   <h1>CheeSynth: Basic Usage</h1>
   <div class="cheesynth" id="cs1"></div>
   <ul class="cheesynth-buttons">
-    <li onclick="claud.add('cs.add(3,0,\'Wave\' ); cs.render()').run()">add(3,0,'Wave')</li>
-    <li onclick="claud.add('cs.add(1,6,\'Param\'); cs.render()').run()">add(1,6,'Param')</li>
-    <li onclick="claud.add('cs.w02.x--; cs.render()').run()">w02.x--</li>
-    <li onclick="claud.add('cs.w02.x++; cs.render()').run()">w02.x++</li>
-    <li onclick="claud.add('cs.w02.y++; cs.render()').run()">w02.y++</li>
-    <li onclick="claud.add('cs.p03.brick.O += 100; cs.render()').run()">p03.brick.O += 100</li>
+    <li onclick="claud.add('cs.add(20,0,\'Wave\'); cs.render()').run()">add(20,0,'Wave')</li>
+    <li onclick="claud.add('cs.add(0,4,\'Param\'); cs.render()').run()">add(0,4,'Param')</li>
+    <li onclick="claud.add('cs.w03.x--; cs.render()').run()">w03.x--</li>
+    <li onclick="claud.add('cs.w03.x++; cs.render()').run()">w03.x++</li>
+    <li onclick="claud.add('cs.w03.y++; cs.render()').run()">w03.y++</li>
+    <li onclick="claud.add('cs.l01.x--; cs.render()').run()">l01.x--</li>
+    <li onclick="claud.add('cs.p04.brick.O += 100; cs.render()').run()">p04.brick.O += 100</li>
+    <li onclick="claud.add('cs.p04.brick.O -= 240; cs.render()').run()">p04.brick.O -= 240</li>
+    <li onclick="claud.add('cs.render()').run()">cs.render()</li>
   </ul>
   <div id="claud-out" class="filog" style="height:8rem; overflow:auto;"></div>
-  <div id="claud-in"  class="filog"></div>
+  <div id="claud-in"  class="filog" spellcheck="false"></div>
 </body>
 </html>

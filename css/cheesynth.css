@@ -12,9 +12,11 @@ body {
 
 ul.cheesynth-buttons {
   padding: 0;
+  -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none;
 }
 ul.cheesynth-buttons li {
   display: inline-block;
+  margin: .2rem;
   padding: .5rem 1rem;
   list-style: none;
   background-color: silver;

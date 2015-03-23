@@ -21,7 +21,7 @@ Define the constructor
       constructor: (opt={}) ->
         super
         @oscillator = CheeSynth.ctx.createOscillator()
-        @oscillator.type            = opt.type || 'square'
+        @oscillator.type            = opt.type || 'triangle'
         @oscillator.frequency.value = opt.freq || 70
         @oscillator.start()
 
@@ -35,7 +35,7 @@ Define public methods
 Xx. 
 
       maintain: (from, to) ->
-        claud.log @id + '.' + from.c, 'still connected to ', to.f.brick.id + '.' + to.c
+        #claud.log @id + '.' + from.c, 'still connected to ', to.f.brick.id + '.' + to.c
         if 'Param' == from.f.brick.I
           if 'F' == to.c
             @oscillator.frequency.value = from.f.brick.O
@@ -46,7 +46,7 @@ Xx.
 Xx. 
 
       connect: (from, to) ->
-        claud.log @id + '.' + from.c, 'connects to ', to.f.brick.id + '.' + to.c
+        #claud.log @id + '.' + from.c, 'connects to ', to.f.brick.id + '.' + to.c
         if 'Loudspeaker' == to.f.brick.I
           @oscillator.connect CheeSynth.ctx.destination
         if 'Param' == from.f.brick.I
@@ -59,7 +59,7 @@ Xx.
 Xx. 
 
       disconnect: (from, to) ->
-        claud.log @id + '.' + from.c, 'disconnects from ', to.f.brick.id + '.' + to.c
+        #claud.log @id + '.' + from.c, 'disconnects from ', to.f.brick.id + '.' + to.c
         if 'Loudspeaker' == to.f.brick.I
           @oscillator.disconnect CheeSynth.ctx.destination
 
